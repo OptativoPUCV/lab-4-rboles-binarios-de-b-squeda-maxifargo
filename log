@@ -44,3 +44,9 @@ C:\Users\maxi\AppData\Local\Temp\cc10y3Ln.o: In function `erase_test3':
 C:\Users\maxi\Desktop\lab 4\lab-4-rboles-binarios-de-b-squeda-maxifargo/test.c:302: undefined reference to `eraseTreeMap'
 collect2.exe: error: ld returned 1 exit status
 735ad59
+Fri, Jun 20, 2025 10:33:44 PM: 
+ treemap.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+ tests:  29|0
+total_score: 70/70
+2286412

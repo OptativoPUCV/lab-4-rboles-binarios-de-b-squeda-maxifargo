@@ -167,3 +167,11 @@ Pair * nextTreeMap(TreeMap * tree) {
 
     return (succ != NULL) ? succ->pair : NULL;
 }
+
+void eraseTreeMap(TreeMap * tree, void* key){
+    if (tree == NULL || tree->root == NULL) return;
+
+    if (searchTreeMap(tree, key) == NULL) return;
+    TreeNode* node = tree->current;
+    removeNode(tree, node);
+}
