@@ -5,7 +5,6 @@
 
 typedef struct TreeNode TreeNode;
 
-
 struct TreeNode {
     Pair* pair;
     TreeNode * left;
@@ -20,15 +19,15 @@ struct TreeMap {
 };
 
 int is_equal(TreeMap* tree, void* key1, void* key2){
-    if(tree->lower_than(key1,key2)==0 &&  
-        tree->lower_than(key2,key1)==0) return 1;
-    else return 0;
+    return (tree->lower_than(key1,key2) == 0 && tree->lower_than(key2,key1) == 0);
 }
-
 
 TreeNode * createTreeNode(void* key, void * value) {
     TreeNode * new = (TreeNode *)malloc(sizeof(TreeNode));
-    if (new == NULL) return NULL;
+    if (!new) {
+        fprintf(stderr, "No pude crear el nodo, memoria insuficiente\n");
+        return NULL;
+    }
     new->pair = (Pair *)malloc(sizeof(Pair));
     new->pair->key = key;
     new->pair->value = value;
@@ -36,22 +35,32 @@ TreeNode * createTreeNode(void* key, void * value) {
     return new;
 }
 
+// se crea un arbol vacio como el presupuesto del edificio de informatica
 TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
     TreeMap * new = (TreeMap *)malloc(sizeof(TreeMap));
+    if (!new) {
+        fprintf(stderr, "Error al crear TreeMap\n");
+        return NULL;
+    }
     new->root = NULL;
     new->current = NULL;
     new->lower_than = lower_than;
     return new;
 }
 
+// para insertar nuevo par
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
     TreeNode *parent = NULL;
     TreeNode *current = tree->root;
 
+    // mini funcion para comparar claves
     while (current != NULL) {
         parent = current;
 
-        if (is_equal(tree, key, current->pair->key)) return; // Evitar duplicados
+        if (is_equal(tree, key, current->pair->key)) {
+            // clave existente
+            return;
+        }
 
         if (tree->lower_than(key, current->pair->key))
             current = current->left;
@@ -59,19 +68,21 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
             current = current->right;
     }
 
+    // nuevo nodo a enlazar
     TreeNode *newNode = createTreeNode(key, value);
     newNode->parent = parent;
 
     if (parent == NULL)
-        tree->root = newNode;
+        tree->root = newNode; // caso arbol vacio 
     else if (tree->lower_than(key, parent->pair->key))
         parent->left = newNode;
     else
         parent->right = newNode;
 
-    tree->current = newNode;
+    tree->current = newNode; // puntero a nuevo nodo
 }
 
+// nodo minimo
 TreeNode * minimum(TreeNode * x) {
     if (x == NULL) return NULL;
     while (x->left != NULL)
@@ -79,31 +90,40 @@ TreeNode * minimum(TreeNode * x) {
     return x;
 }
 
+// chao nodo
 void removeNode(TreeMap * tree, TreeNode* node) {
-    if (node->left == NULL && node->right == NULL) { // Caso 1: Nodo hoja
-        if (node == node->parent->left) node->parent->left = NULL;
-        else node->parent->right = NULL;
+    // caso nodo sin hijos
+    if (node->left == NULL && node->right == NULL) {
+        if (node->parent != NULL) {
+            if (node == node->parent->left) node->parent->left = NULL;
+            else node->parent->right = NULL;
+        } else {
+            tree->root = NULL; // el nodo era la raíz
+        }
     }
-    else if (node->left == NULL || node->right == NULL) { // Caso 2: Un hijo
+    // caso nodo con un hijo
+    else if (node->left == NULL || node->right == NULL) {
         TreeNode *child = (node->left != NULL) ? node->left : node->right;
         child->parent = node->parent;
 
         if (node->parent == NULL)
-            tree->root = child;
+            tree->root = child; // El hijo pasa a ser la raíz
         else if (node == node->parent->left)
             node->parent->left = child;
         else
             node->parent->right = child;
     }
-    else { // Caso 3: Dos hijos
+    // caso nodo con dos hijos, familia tradicional
+    else {
         TreeNode *succ = minimum(node->right);
-        node->pair = succ->pair;
-        removeNode(tree, succ);
+        node->pair = succ->pair;  // Copiamos datos
+        removeNode(tree, succ);   // Eliminamos sucesor
         return;
     }
     free(node);
 }
 
+// busca el par con la clave dada, si existe
 Pair * searchTreeMap(TreeMap * tree, void* key) {
     TreeNode *current = tree->root;
 
@@ -117,9 +137,10 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
         else
             current = current->right;
     }
-    return NULL;
+    return NULL; // No encontrado
 }
 
+// busca el par con la clave de arriba
 Pair * upperBound(TreeMap * tree, void* key) {
     TreeNode *current = tree->root;
     TreeNode *ub = NULL;
@@ -140,6 +161,7 @@ Pair * upperBound(TreeMap * tree, void* key) {
     return NULL;
 }
 
+// busca el par con la clave de abajo
 Pair * firstTreeMap(TreeMap * tree) {
     if (tree == NULL || tree->root == NULL) return NULL;
     TreeNode *min = minimum(tree->root);
@@ -147,6 +169,7 @@ Pair * firstTreeMap(TreeMap * tree) {
     return (min != NULL) ? min->pair : NULL;
 }
 
+// encuentra el sucesor de un nodo
 TreeNode * successor(TreeNode * node) {
     if (node->right != NULL)
         return minimum(node->right);
@@ -159,19 +182,22 @@ TreeNode * successor(TreeNode * node) {
     return p;
 }
 
+// devuelve el siguiente par en orden
 Pair * nextTreeMap(TreeMap * tree) {
     if (tree == NULL || tree->current == NULL) return NULL;
 
     TreeNode *succ = successor(tree->current);
-    tree->current = succ;
+    tree->current = succ; // nuevo sucesor
 
     return (succ != NULL) ? succ->pair : NULL;
 }
 
+// chao nodo (por clave)
 void eraseTreeMap(TreeMap * tree, void* key){
     if (tree == NULL || tree->root == NULL) return;
 
-    if (searchTreeMap(tree, key) == NULL) return;
+    if (searchTreeMap(tree, key) == NULL) return; // No está la clave
+
     TreeNode* node = tree->current;
     removeNode(tree, node);
 }
