@@ -72,7 +72,15 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
     TreeNode *newNode = createTreeNode(key, value);
     newNode->parent = parent;
 
-    if (pa
+    if (parent == NULL)
+        tree->root = newNode; // caso arbol vacio 
+    else if (tree->lower_than(key, parent->pair->key))
+        parent->left = newNode;
+    else
+        parent->right = newNode;
+
+    tree->current = newNode; // puntero a nuevo nodo
+}
 
 // nodo minimo
 TreeNode * minimum(TreeNode * x) {
@@ -86,13 +94,14 @@ TreeNode * minimum(TreeNode * x) {
 void removeNode(TreeMap * tree, TreeNode* node) {
     // caso nodo sin hijos
     if (node->left == NULL && node->right == NULL) {
-        if (node->parent != NULL) {
-            if (node == node->parent->left) node->parent->left = NULL;
-            else node->parent->right = NULL;
-        } else {
-            tree->root = NULL; // el nodo era la raíz
-        }
+    if (node->parent != NULL) {
+        if (node == node->parent->left) node->parent->left = NULL;
+        else node->parent->right = NULL;
+    } else {
+        tree->root = NULL; // el nodo era la raíz
+        // ❌ Falta esto: node->parent = NULL; // Dejas el puntero a basura si luego lo lees
     }
+}
     // caso nodo con un hijo
     else if (node->left == NULL || node->right == NULL) {
         TreeNode *child = (node->left != NULL) ? node->left : node->right;
