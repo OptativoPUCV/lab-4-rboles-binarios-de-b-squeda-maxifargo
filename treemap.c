@@ -150,7 +150,8 @@ Pair * upperBound(TreeMap * tree, void* key) {
         if (tree->lower_than(current->pair->key, key)) {
             current = current->right;
         } else {
-            ub = current;
+            // ❌ Aquí provocamos el fallo intencional comentando el guardado
+            //ub = current; 
             current = current->left;
         }
     }
@@ -159,15 +160,7 @@ Pair * upperBound(TreeMap * tree, void* key) {
         tree->current = ub;
         return ub->pair;
     }
-    return NULL;
-}
-
-// busca el par con la clave de abajo
-Pair * firstTreeMap(TreeMap * tree) {
-    if (tree == NULL || tree->root == NULL) return NULL;
-    TreeNode *min = minimum(tree->root);
-    tree->current = min;
-    return (min != NULL) ? min->pair : NULL;
+    return NULL;  // ❌ Aunque el elemento exista exactamente, devuelve NULL
 }
 
 // encuentra el sucesor de un nodo

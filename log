@@ -104,3 +104,13 @@ Fri, Jun 20, 2025 11:18:51 PM:
  tests:  29|0
 total_score: 70/70
 29f8072
+Fri, Jun 20, 2025 11:19:52 PM: 
+ treemap.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+Compilation failed
+C:\Users\maxi\AppData\Local\Temp\ccUPPEl6.o: In function `first_test1':
+C:\Users\maxi\Desktop\lab 4\lab-4-rboles-binarios-de-b-squeda-maxifargo/test.c:318: undefined reference to `firstTreeMap'
+C:\Users\maxi\AppData\Local\Temp\ccUPPEl6.o: In function `first_test2':
+C:\Users\maxi\Desktop\lab 4\lab-4-rboles-binarios-de-b-squeda-maxifargo/test.c:340: undefined reference to `firstTreeMap'
+collect2.exe: error: ld returned 1 exit status
+d2d77aa
