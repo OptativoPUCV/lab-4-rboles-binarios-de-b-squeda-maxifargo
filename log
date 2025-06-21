@@ -114,3 +114,42 @@ C:\Users\maxi\AppData\Local\Temp\ccUPPEl6.o: In function `first_test2':
 C:\Users\maxi\Desktop\lab 4\lab-4-rboles-binarios-de-b-squeda-maxifargo/test.c:340: undefined reference to `firstTreeMap'
 collect2.exe: error: ld returned 1 exit status
 d2d77aa
+Fri, Jun 20, 2025 11:21:05 PM: 
+ treemap.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+Compilation failed
+In file included from test.c:4:0:
+treemap.c:145:1: error: unknown type name 'PPair'
+ PPair * upperBound(TreeMap * tree, void* key) {
+ ^~~~~
+treemap.c:145:9: error: conflicting types for 'upperBound'
+ PPair * upperBound(TreeMap * tree, void* key) {
+         ^~~~~~~~~~
+In file included from treemap.c:4:0,
+                 from test.c:4:
+treemap.h:19:8: note: previous declaration of 'upperBound' was here
+ Pair * upperBound(TreeMap * tree, void* key);
+        ^~~~~~~~~~
+In file included from test.c:4:0:
+treemap.c: In function 'upperBound':
+treemap.c:161:18: error: return from incompatible pointer type [-Werror=incompatible-pointer-types]
+         return ub->pair;
+                ~~^~~~~~
+test.c: In function 'ub_test1':
+test.c:427:15: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
+     Pair* aux=upperBound(tree, &j);
+               ^~~~~~~~~~
+test.c: In function 'ub_test2':
+test.c:447:15: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
+     Pair* aux=upperBound(tree, &j);
+               ^~~~~~~~~~
+test.c: In function 'ub_test3':
+test.c:468:15: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
+     Pair* aux=upperBound(tree, &j);
+               ^~~~~~~~~~
+test.c: In function 'ub_test4':
+test.c:489:15: error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]
+     Pair* aux=upperBound(tree, &j);
+               ^~~~~~~~~~
+cc1.exe: all warnings being treated as errors
+53eb24c

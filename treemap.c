@@ -142,7 +142,7 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
 }
 
 // busca el par con la clave de arriba
-Pair * upperBound(TreeMap * tree, void* key) {
+PPair * upperBound(TreeMap * tree, void* key) {
     TreeNode *current = tree->root;
     TreeNode *ub = NULL;
 
@@ -161,6 +161,14 @@ Pair * upperBound(TreeMap * tree, void* key) {
         return ub->pair;
     }
     return NULL;  // ❌ Aunque el elemento exista exactamente, devuelve NULL
+}
+
+// busca el par con la clave de abajo
+Pair * firstTreeMap(TreeMap * tree) {
+    if (tree == NULL || tree->root == NULL) return NULL;
+    TreeNode *min = minimum(tree->root);
+    tree->current = min;
+    return (min != NULL) ? min->pair : NULL;
 }
 
 // encuentra el sucesor de un nodo
