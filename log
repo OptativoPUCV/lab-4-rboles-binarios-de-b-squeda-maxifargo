@@ -78,3 +78,23 @@ test.c:606:1: error: expected declaration or statement at end of input
  ^
 cc1.exe: all warnings being treated as errors
 36fc5ea
+Fri, Jun 20, 2025 11:18:38 PM: 
+Compilation failed
+In file included from test.c:4:0:
+treemap.c: In function 'insertTreeMap':
+treemap.c:75:9: error: 'pa' undeclared (first use in this function)
+     if (pa
+         ^~
+treemap.c:75:9: note: each undeclared identifier is reported only once for each function it appears in
+treemap.c:78:1: error: expected ')' before 'TreeNode'
+ TreeNode * minimum(TreeNode * x) {
+ ^~~~~~~~
+treemap.c:75:5: error: this 'if' clause does not guard... [-Werror=misleading-indentation]
+     if (pa
+     ^~
+test.c:607:0: note: ...this statement, but the latter is misleadingly indented as if it is guarded by the 'if'
+test.c:606:1: error: expected declaration or statement at end of input
+ }
+ ^
+cc1.exe: all warnings being treated as errors
+de5cec3
