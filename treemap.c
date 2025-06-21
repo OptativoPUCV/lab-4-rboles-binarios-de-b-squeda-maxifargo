@@ -94,14 +94,13 @@ TreeNode * minimum(TreeNode * x) {
 void removeNode(TreeMap * tree, TreeNode* node) {
     // caso nodo sin hijos
     if (node->left == NULL && node->right == NULL) {
-    if (node->parent != NULL) {
-        if (node == node->parent->left) node->parent->left = NULL;
-        else node->parent->right = NULL;
-    } else {
-        tree->root = NULL; // el nodo era la raíz
-        // ❌ Falta esto: node->parent = NULL; // Dejas el puntero a basura si luego lo lees
+        if (node->parent != NULL) {
+            if (node == node->parent->left) node->parent->left = NULL;
+            else node->parent->right = NULL;
+        } else {
+            tree->root = NULL; // el nodo era la raíz
+        }
     }
-}
     // caso nodo con un hijo
     else if (node->left == NULL || node->right == NULL) {
         TreeNode *child = (node->left != NULL) ? node->left : node->right;
@@ -150,8 +149,7 @@ Pair * upperBound(TreeMap * tree, void* key) {
         if (tree->lower_than(current->pair->key, key)) {
             current = current->right;
         } else {
-            // ❌ Aquí provocamos el fallo intencional comentando el guardado
-            //ub = current; 
+            ub = current;
             current = current->left;
         }
     }
@@ -160,7 +158,7 @@ Pair * upperBound(TreeMap * tree, void* key) {
         tree->current = ub;
         return ub->pair;
     }
-    return NULL;  // ❌ Aunque el elemento exista exactamente, devuelve NULL
+    return NULL;
 }
 
 // busca el par con la clave de abajo
